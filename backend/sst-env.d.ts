@@ -2,23 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
+
+/// <reference path="../sst-env.d.ts" />
+
 import "sst"
 export {}
-declare module "sst" {
-  export interface Resource {
-    "Database": {
-      "token": string
-      "type": "sst.sst.Linkable"
-      "url": string
-    }
-    "Site": {
-      "type": "sst.aws.StaticSite"
-      "url": string
-    }
-    "Websocket": {
-      "managementEndpoint": string
-      "type": "sst.aws.ApiGatewayWebSocket"
-      "url": string
-    }
-  }
-}

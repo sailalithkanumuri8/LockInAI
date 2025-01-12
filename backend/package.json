@@ -4,7 +4,6 @@
   "type": "module",
   "devDependencies": {
     "@types/aws-lambda": "8.10.147",
-    "@types/bun": "latest",
     "aws-lambda": "^1.0.7",
     "drizzle-kit": "^0.30.1"
   },

@@ -43,16 +43,23 @@ export default $config({
     const ws = new sst.aws.ApiGatewayWebSocket("Websocket", {});
 
     ws.route("$connect", {
-      handler: "src/ws.connect",
+      handler: "backend/src/ws.connect",
       link: [database, ws],
     });
     ws.route("$disconnect", {
-      handler: "src/ws.disconnect",
+      handler: "backend/src/ws.disconnect",
       link: [database, ws],
     });
     ws.route("$default", {
-      handler: "src/ws.handleEvent",
+      handler: "backend/src/ws.handleEvent",
       link: [database, ws],
+    });
+
+    const site = new sst.aws.StaticSite("Site", {
+      path: "frontend/",
+      environment: {
+        VITE_WS_URL: ws.url,
+      },
     });
 
     return {};

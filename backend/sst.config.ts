@@ -29,14 +29,39 @@ export default $config({
         token: db.id.apply(
           async (id) => (await turso.getDatabaseToken({ id })).jwt,
         ),
-        url: $interpolate`libsql://${db.id}-rgodha24.aws-us-east-1.turso.io`,
+        url: $interpolate`libsql://${db.id}-rgodha.aws-us-east-1.turso.io`,
+      },
+    });
+    new sst.x.DevCommand("Studio", {
+      link: [database],
+      dev: {
+        command: "bun drizzle-kit studio",
+        autostart: true,
       },
     });
 
     const ws = new sst.aws.ApiGatewayWebSocket("Websocket");
+    const wsManagement = new sst.Linkable("wsManagementEndpoint", {
+      properties: {
+        managementEndpoint: ws.managementEndpoint.apply((s) =>
+          s.replaceAll("$default", ""),
+        ),
+      },
+    });
 
-    ws.route("$connect", { handler: "src/ws.connect", link: [database] });
-    ws.route("$disconnect", "src/ws.disconnect");
-    ws.route("$default", "src/ws.handleEvent");
+    ws.route("$connect", {
+      handler: "src/ws.connect",
+      link: [database, wsManagement],
+    });
+    ws.route("$disconnect", {
+      handler: "src/ws.disconnect",
+      link: [database, wsManagement],
+    });
+    ws.route("$default", {
+      handler: "src/ws.handleEvent",
+      link: [database, wsManagement],
+    });
+
+    return {};
   },
 });

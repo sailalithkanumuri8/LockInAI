@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      sst:
+        specifier: 3.5.7
+        version: 3.5.7
 
   backend:
     dependencies:
@@ -16,6 +20,9 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
+      '@libsql/darwin-arm64':
+        specifier: 0.5.0-pre.5
+        version: 0.5.0-pre.5
       drizzle-orm:
         specifier: ^0.38.3
         version: 0.38.3(@libsql/client@0.14.0)(@types/react@18.3.18)(react@18.3.1)
@@ -700,6 +707,11 @@ packages:
 
   '@libsql/darwin-arm64@0.4.7':
     resolution: {integrity: sha512-yOL742IfWUlUevnI5PdnIT4fryY3LYTdLm56bnY0wXBw7dhFcnjuA7jrH3oSVz2mjZTHujxoITgAE7V6Z+eAbg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@libsql/darwin-arm64@0.5.0-pre.5':
+    resolution: {integrity: sha512-kO4fiqQ4MPy/XNQNmS/snB2ja/Gh1RyUCJpNeGTw++9uGKRvz98T/s09yW4RlHX2CsCzku2lzzWQXSLDdD1D1g==}
     cpu: [arm64]
     os: [darwin]
 
@@ -2786,6 +2798,8 @@ snapshots:
 
   '@libsql/darwin-arm64@0.4.7':
     optional: true
+
+  '@libsql/darwin-arm64@0.5.0-pre.5': {}
 
   '@libsql/darwin-x64@0.4.7':
     optional: true

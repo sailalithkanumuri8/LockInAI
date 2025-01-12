@@ -37,6 +37,7 @@ export default $config({
       dev: {
         command: "bun drizzle-kit studio",
         autostart: true,
+        directory: "backend",
       },
     });
 

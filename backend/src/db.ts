@@ -10,7 +10,7 @@ export const db = drizzle({
 });
 
 export const lockin = t.sqliteTable("lockin", {
-  code: t.int().primaryKey({ autoIncrement: true }),
+  code: t.text().primaryKey(),
   computerId: t.text().notNull().unique(),
   phoneId: t.text(),
 });

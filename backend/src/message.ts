@@ -29,7 +29,7 @@ export async function sendMessage(
   message: z.output<typeof messages>,
 ) {
   const manager = new ApiGatewayManagementApi({
-    endpoint: Resource.wsManagementEndpoint.managementEndpoint,
+    endpoint: Resource.Websocket.managementEndpoint,
   });
   const Data = JSON.stringify(message);
   console.log(`posting ${Data} to connection ${ConnectionId}`);

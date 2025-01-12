@@ -40,26 +40,19 @@ export default $config({
       },
     });
 
-    const ws = new sst.aws.ApiGatewayWebSocket("Websocket");
-    const wsManagement = new sst.Linkable("wsManagementEndpoint", {
-      properties: {
-        managementEndpoint: ws.managementEndpoint.apply((s) =>
-          s.replaceAll("$default", ""),
-        ),
-      },
-    });
+    const ws = new sst.aws.ApiGatewayWebSocket("Websocket", {});
 
     ws.route("$connect", {
       handler: "src/ws.connect",
-      link: [database, wsManagement],
+      link: [database, ws],
     });
     ws.route("$disconnect", {
       handler: "src/ws.disconnect",
-      link: [database, wsManagement],
+      link: [database, ws],
     });
     ws.route("$default", {
       handler: "src/ws.handleEvent",
-      link: [database, wsManagement],
+      link: [database, ws],
     });
 
     return {};

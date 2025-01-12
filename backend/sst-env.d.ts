@@ -15,10 +15,6 @@ declare module "sst" {
       "type": "sst.aws.ApiGatewayWebSocket"
       "url": string
     }
-    "wsManagementEndpoint": {
-      "managementEndpoint": string
-      "type": "sst.sst.Linkable"
-    }
   }
 }
 /// <reference path="sst-env.d.ts" />

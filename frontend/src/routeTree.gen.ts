@@ -11,14 +11,14 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LockedinImport } from './routes/lockedin'
+import { Route as LockinImport } from './routes/lockin'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const LockedinRoute = LockedinImport.update({
-  id: '/lockedin',
-  path: '/lockedin',
+const LockinRoute = LockinImport.update({
+  id: '/lockin',
+  path: '/lockin',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +39,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/lockedin': {
-      id: '/lockedin'
-      path: '/lockedin'
-      fullPath: '/lockedin'
-      preLoaderRoute: typeof LockedinImport
+    '/lockin': {
+      id: '/lockin'
+      path: '/lockin'
+      fullPath: '/lockin'
+      preLoaderRoute: typeof LockinImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +53,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/lockedin': typeof LockedinRoute
+  '/lockin': typeof LockinRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/lockedin': typeof LockedinRoute
+  '/lockin': typeof LockinRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/lockedin': typeof LockedinRoute
+  '/lockin': typeof LockinRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lockedin'
+  fullPaths: '/' | '/lockin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lockedin'
-  id: '__root__' | '/' | '/lockedin'
+  to: '/' | '/lockin'
+  id: '__root__' | '/' | '/lockin'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LockedinRoute: typeof LockedinRoute
+  LockinRoute: typeof LockinRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LockedinRoute: LockedinRoute,
+  LockinRoute: LockinRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +97,14 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/lockedin"
+        "/lockin"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/lockedin": {
-      "filePath": "lockedin.tsx"
+    "/lockin": {
+      "filePath": "lockin.tsx"
     }
   }
 }

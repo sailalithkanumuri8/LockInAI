@@ -66,7 +66,9 @@ export const gameStateStore = createStore<State>((set) => ({
 
 const ws = new WebSocket(import.meta.env.VITE_WS_URL);
 const send = (msg: z.output<typeof messages>) => {
-  ws.send(JSON.stringify(msg));
+  const m = JSON.stringify(msg);
+  console.log(`sending ${m}`);
+  ws.send(m);
 };
 
 ws.onopen = () => {

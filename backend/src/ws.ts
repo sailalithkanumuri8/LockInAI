@@ -5,14 +5,14 @@ import { eq, or } from "drizzle-orm";
 import { customAlphabet } from "nanoid";
 
 export const connect: APIGatewayProxyWebsocketHandlerV2 = async (event) => {
-  console.log(event);
+  console.log("connecting");
   // noop
   return { statusCode: 200, body: "connected" };
 };
 
 export const disconnect: APIGatewayProxyWebsocketHandlerV2 = async (req) => {
   const connectionId = req.requestContext.connectionId!;
-  console.log(req);
+  console.log("disconnecting");
 
   const [li] = await db
     .select()

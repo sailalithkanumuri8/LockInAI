@@ -11,8 +11,8 @@
 		8C34C9912D345DB6002CDD82 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C34C9902D345DB6002CDD82 /* ContentView.swift */; };
 		8C34C9932D345DB7002CDD82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C34C9922D345DB7002CDD82 /* Assets.xcassets */; };
 		8C34C9962D345DB7002CDD82 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C34C9952D345DB7002CDD82 /* Preview Assets.xcassets */; };
-		8C4103B72D345E8700B1D597 /* DuringLocked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4103B62D345E8700B1D597 /* DuringLocked.swift */; };
 		8C4103B92D346C2D00B1D597 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4103B82D346C2D00B1D597 /* WebSocket.swift */; };
+		8C8638F22D3770FF0067A42E /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8638F12D3770FF0067A42E /* NotificationHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,8 +21,8 @@
 		8C34C9902D345DB6002CDD82 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8C34C9922D345DB7002CDD82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C34C9952D345DB7002CDD82 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8C4103B62D345E8700B1D597 /* DuringLocked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuringLocked.swift; sourceTree = "<group>"; };
 		8C4103B82D346C2D00B1D597 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
+		8C8638F12D3770FF0067A42E /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				8C4103B82D346C2D00B1D597 /* WebSocket.swift */,
-				8C4103B62D345E8700B1D597 /* DuringLocked.swift */,
+				8C8638F12D3770FF0067A42E /* NotificationHandler.swift */,
 				8C34C98E2D345DB6002CDD82 /* LockinAiApp.swift */,
 				8C34C9902D345DB6002CDD82 /* ContentView.swift */,
 				8C34C9922D345DB7002CDD82 /* Assets.xcassets */,
@@ -145,7 +145,7 @@
 			files = (
 				8C34C9912D345DB6002CDD82 /* ContentView.swift in Sources */,
 				8C4103B92D346C2D00B1D597 /* WebSocket.swift in Sources */,
-				8C4103B72D345E8700B1D597 /* DuringLocked.swift in Sources */,
+				8C8638F22D3770FF0067A42E /* NotificationHandler.swift in Sources */,
 				8C34C98F2D345DB6002CDD82 /* LockinAiApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +280,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockinAi/Preview Content\"";
+				DEVELOPMENT_TEAM = TA857H499B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -308,6 +309,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LockinAi/Preview Content\"";
+				DEVELOPMENT_TEAM = TA857H499B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

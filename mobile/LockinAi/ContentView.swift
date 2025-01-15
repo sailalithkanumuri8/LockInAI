@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var websocketManager = WebSocketManager()
     @State private var messageText = ""
+    @State private var showingPermissionAlert = false
     
     var body: some View {
         ZStack {
@@ -38,26 +39,48 @@ struct ContentView: View {
                     .bold()
                     .multilineTextAlignment(.center)
                 
-                HStack {
-                    TextField("Enter code", text: $messageText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
-                        .frame(width: 150, height: 100)
-                        .cornerRadius(100)
-                    
-                    Button(action: sendMessage) {
-                        Text("Send")
-                            .frame(width: 60, height: 60)
-                            .background(.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(60)
+                if !websocketManager.isConnected {
+                    HStack {
+                        TextField("Enter code", text: $messageText)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.horizontal)
+                            .frame(width: 150, height: 100)
+                            .cornerRadius(100)
+                        
+                        Button(action: sendMessage) {
+                            Text("Send")
+                                .frame(width: 60, height: 60)
+                                .background(.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(60)
+                        }
                     }
+                    .padding()
+                } else {
+                    Button(action: disconnect) {
+                        Text("Disconnect")
+                            .frame(width: 120, height: 60)
+                            .background(.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(30)
+                    }
+                    .padding()
                 }
-                .padding()
             }
             .onAppear {
-                // Replace with your WebSocket server URL
-                websocketManager.connect(to: "wss://yzzswl0nke.execute-api.us-east-1.amazonaws.com/$default")
+                // Request notification permissions when view appears
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    if settings.authorizationStatus == .notDetermined {
+                        DispatchQueue.main.async {
+                            showingPermissionAlert = true
+                        }
+                    }
+                }
+                // Connect to your WebSocket server
+                websocketManager.connect(to: "wss://ws.lockinai.rohangodha.com")
+            }
+            .sheet(isPresented: $showingPermissionAlert) {
+                NotificationPermissionView()
             }
             .onDisappear {
                 websocketManager.disconnect()
@@ -70,9 +93,56 @@ struct ContentView: View {
         websocketManager.send(messageText)
         messageText = ""
     }
+    
+    private func disconnect() {
+        websocketManager.disconnect()
+    }
 }
+
+struct NotificationPermissionView: View {
+    @Environment(\.dismiss) var dismiss // To allow dismissing the sheet
+    @State private var permissionStatus: String = ""
+
+    var body: some View {
+        VStack {
+            Text("This app needs notification permissions to alert you when you look away.")
+                .multilineTextAlignment(.center)
+                .padding()
+            
+            Text(permissionStatus)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(.top)
+
+            Button("Enable Notifications") {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                    DispatchQueue.main.async {
+                        if granted {
+                            permissionStatus = "Notifications enabled."
+                            dismiss() // Dismiss the sheet
+                        } else if let error = error {
+                            permissionStatus = "Error: \(error.localizedDescription)"
+                        } else {
+                            permissionStatus = "Notifications denied."
+                        }
+                    }
+                }
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+
+            Button("Cancel") {
+                dismiss() // Dismiss the sheet if the user cancels
+            }
+            .padding(.top)
+        }
+        .padding()
+    }
+}
+
 
 #Preview {
     ContentView()
 }
-

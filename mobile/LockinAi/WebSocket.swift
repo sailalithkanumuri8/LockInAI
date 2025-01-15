@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 import UserNotifications
 
-// Separate structs for sending and receiving messages
+// Message structs for WebSocket communication
 struct SendMessage: Codable {
     let type: String
     let code: String
@@ -27,20 +27,19 @@ struct ReceiveMessage: Codable {
 class WebSocketManager: ObservableObject {
     private var webSocketTask: URLSessionWebSocketTask?
     @Published var messages: [String] = []
+    @Published var isConnected = false
+    private let notificationHandler = NotificationHandler()
     
     init() {
-        // Request notification permissions when the manager is initialized
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-            } else if let error = error {
-                print("Notification permission error: \(error)")
-            }
-        }
+        // Ask for notification permissions during initialization
+        notificationHandler.askPermission()
     }
     
     func connect(to url: String) {
-        guard let url = URL(string: url) else { return }
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
         let session = URLSession(configuration: .default)
         webSocketTask = session.webSocketTask(with: url)
         webSocketTask?.resume()
@@ -59,33 +58,26 @@ class WebSocketManager: ObservableObject {
         print("Sending JSON: \(jsonString)")
         
         let message = URLSessionWebSocketTask.Message.string(jsonString)
-        webSocketTask?.send(message) { error in
+        webSocketTask?.send(message) { [weak self] error in
             if let error = error {
                 print("WebSocket sending error: \(error)")
+            } else {
+                DispatchQueue.main.async {
+                    self?.isConnected = true
+                }
             }
         }
     }
     
     private func showNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Focus Reminder"
-        content.body = "Hey! Let's get back to work!"
-        content.sound = .default
-        
-        // Create an immediate trigger
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        
-        // Create the request
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                          content: content,
-                                          trigger: trigger)
-        
-        // Add the request to the notification center
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Notification error: \(error)")
-            }
-        }
+        print("Scheduling notification using NotificationHandler...")
+        notificationHandler.sendNotification(
+            date: Date(),
+            type: "time",
+            timeInterval: 5,
+            title: "Focus Reminder",
+            body: "Hey! Let's get back to work!"
+        )
     }
     
     private func receiveMessage() {
@@ -99,12 +91,11 @@ class WebSocketManager: ObservableObject {
                     if let data = text.data(using: .utf8),
                        let decodedMessage = try? JSONDecoder().decode(ReceiveMessage.self, from: data) {
                         DispatchQueue.main.async {
-                            // Handle different message types
                             switch decodedMessage.type {
                             case "request_code":
                                 print("Server requested code")
                             case "looked_away":
-                                print("User looked away - sending notification")
+                                print("User looked away - triggering notification")
                                 self?.showNotification()
                             default:
                                 print("Unknown message type: \(decodedMessage.type)")
@@ -134,5 +125,6 @@ class WebSocketManager: ObservableObject {
     
     func disconnect() {
         webSocketTask?.cancel(with: .goingAway, reason: nil)
+        isConnected = false
     }
 }

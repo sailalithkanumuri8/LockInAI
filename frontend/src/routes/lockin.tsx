@@ -37,40 +37,33 @@ function WebcamView({ stream }: { stream: MediaStream }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Detect function
-  const detect = async (net: any) => {
+  const detect = async (net: facemesh.FaceLandmarksDetector) => {
     if (
       typeof videoRef.current !== "undefined" &&
       videoRef.current !== null &&
       videoRef.current.readyState === 4
     ) {
-      const face = await net.estimateFaces(videoRef.current);
-      console.log(face);
-      const landmarks: any[] = face.scaledMesh;
+      const landmarks = (await net.estimateFaces(videoRef.current))[0]
+        .keypoints;
 
-      let noseTip: any, leftNose: any, rightNose: any;
-      try {
-        noseTip = { ...landmarks[1], name: "nose tip" };
-        leftNose = { ...landmarks[279], name: "left nose" };
-        rightNose = { ...landmarks[49], name: "right nose" };
-      } catch (error) {
-        console.log("error creating directional points", landmarks, error);
-      }
+      const noseTip = landmarks[1];
+      const leftNose = landmarks[279];
+      const rightNose = landmarks[49];
 
       const midpoint = {
         x: (leftNose!.x + rightNose!.x) / 2,
         y: (leftNose!.y + rightNose!.y) / 2,
-        z: (leftNose!.z + rightNose!.z) / 2,
+        z: (leftNose!.z! + rightNose!.z!) / 2,
       };
 
-      const zaxis = { x: noseTip.x, y: midpoint.y, z: noseTip.z };
+      // const zaxis = { x: noseTip.x, y: midpoint.y, z: noseTip.z };
       const xaxis = { x: midpoint.x + 1, y: midpoint.y, z: midpoint.z };
 
       const yaw = getAngleBetweenLines(midpoint, noseTip, xaxis);
-      const pitch = getAngleBetweenLines(midpoint, noseTip, zaxis);
 
-      console.log([yaw, pitch]);
+      console.log({ yaw });
 
-      if (Math.abs(yaw) < 30 || Math.abs(yaw) > 150 || Math.abs(pitch) > 60) {
+      if (Math.abs(yaw) < 32 || Math.abs(yaw) > 148) {
         // not looking at screen
         console.log("looking away");
         isLookingAwayStore.getState().lookAway();
@@ -81,7 +74,12 @@ function WebcamView({ stream }: { stream: MediaStream }) {
     }
   };
 
-  function getAngleBetweenLines(midpoint: any, point1: any, point2: any) {
+  function getAngleBetweenLines(
+    midpoint: { x: number; y: number },
+    point1: { x: number; y: number },
+    point2: { x: number; y: number },
+  ) {
+    // console.log("get angle between! points", midpoint, point1, point2);
     const v1 = { x: point1.x - midpoint.x, y: point1.y - midpoint.y };
     const v2 = { x: point2.x - midpoint.x, y: point2.y - midpoint.y };
 
@@ -122,20 +120,21 @@ function WebcamView({ stream }: { stream: MediaStream }) {
     };
   }, []);
 
-
   useEffect(() => {
     const interval = (async () => {
       const net = await facemesh.createDetector(
         facemesh.SupportedModels.MediaPipeFaceMesh,
         {
-          runtime: "tfjs",
-          refineLandmarks: false
-        }
+          runtime: "mediapipe",
+          solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh",
+        } as any,
       );
-      return setInterval(() => detect(net), 1000);
-    })()
+      return setInterval(() => detect(net), 333);
+    })();
 
-    return () => {interval.then((interval) => clearInterval(interval))}
+    return () => {
+      interval.then((interval) => clearInterval(interval));
+    };
   }, []);
 
   return (

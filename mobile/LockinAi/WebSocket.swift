@@ -1,13 +1,7 @@
-//
-//  WebSocket.swift
-//  LockinAi
-//
-//  Created by Rohan Godha on 1/12/25.
-//
-
 import SwiftUI
 import Foundation
 import UserNotifications
+import AVFoundation // Import AVFoundation for audio playback
 
 // Message structs for WebSocket communication
 struct SendMessage: Codable {
@@ -28,7 +22,9 @@ class WebSocketManager: ObservableObject {
     private var webSocketTask: URLSessionWebSocketTask?
     @Published var messages: [String] = []
     @Published var isConnected = false
+    @Published var notificationMessage: String? // Property for notification message
     private let notificationHandler = NotificationHandler()
+    private var audioPlayer: AVAudioPlayer? // Audio player for sound playback
     
     init() {
         // Ask for notification permissions during initialization
@@ -79,6 +75,25 @@ class WebSocketManager: ObservableObject {
             body: "Hey! Let's get back to work!"
         )
     }
+
+    // Function to play the alarm sound
+    private func playAlarmSound() {
+        guard let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") else {
+            print("Alarm sound file not found.")
+            return
+        }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.play()
+            // Stop the sound after 1 second
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.audioPlayer?.stop()
+            }
+        } catch {
+            print("Error playing alarm sound: \(error)")
+        }
+    }
     
     private func receiveMessage() {
         webSocketTask?.receive { [weak self] result in
@@ -96,6 +111,8 @@ class WebSocketManager: ObservableObject {
                                 print("Server requested code")
                             case "looked_away":
                                 print("User looked away - triggering notification")
+                                self?.notificationMessage = "Stop Slacking!" // Set the notification message
+                                self?.playAlarmSound() // Play alarm sound
                                 self?.showNotification()
                             default:
                                 print("Unknown message type: \(decodedMessage.type)")

@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  LockinAi
-//
-//  Created by Rohan Godha on 1/12/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -25,6 +18,15 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
+                // Display the notification message if it's not nil
+                if let notificationMessage = websocketManager.notificationMessage {
+                    Text(notificationMessage)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .font(.system(size: 50))
+                        .padding()
+                }
+                
                 Image("Logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -38,6 +40,8 @@ struct ContentView: View {
                     .font(Font.custom("Sans Sherrif", size: 50))
                     .bold()
                     .multilineTextAlignment(.center)
+                    .offset(y: -100)
+
                 
                 if !websocketManager.isConnected {
                     HStack {
@@ -56,6 +60,8 @@ struct ContentView: View {
                         }
                     }
                     .padding()
+                    .offset(y: -100)
+                    
                 } else {
                     Button(action: disconnect) {
                         Text("Disconnect")
@@ -65,6 +71,7 @@ struct ContentView: View {
                             .cornerRadius(30)
                     }
                     .padding()
+                    .offset(y: -100)
                 }
             }
             .onAppear {
@@ -141,7 +148,6 @@ struct NotificationPermissionView: View {
         .padding()
     }
 }
-
 
 #Preview {
     ContentView()

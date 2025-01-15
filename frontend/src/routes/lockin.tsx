@@ -18,11 +18,11 @@ function LockInComponent() {
     gameState.stage === "requesting_code" ? undefined : gameState.code;
 
   return (
-    <div className="flex flex-col justify-between items-center py-16 w-full h-screen">
+    <div className="flex flex-col w-full h-screen bg-[#FF5A5A] bg-[url('/background.png')] justify-between items-center py-8 w-full h-screen">
       <WebcamView stream={stream} />
-      <div className="flex flex-col gap-y-4">
-        <div>stage: {gameState.stage}</div>
-        <div className="text-6xl">{code}</div>
+      <div className="flex flex-col gap-y-4 items-center">
+        <div className="text-white text-2xl">{gameState.stage === "locked_in" ? "Locked In" : gameState.stage === "requesting_code" ? "Requesting Code..." : "Waiting for Phone Connection..."}</div>
+        <CodeDisplay code={code} />
         {gameState.stage === "locked_in" ? (
           <button onClick={() => gameState.lookedAway()}> lookedAway </button>
         ) : null}
@@ -81,7 +81,32 @@ function WebcamView({ stream }: { stream: MediaStream }) {
       ref={videoRef}
       autoPlay
       playsInline
-      className="object-cover w-[80%] aspect-video"
+      className="object-cover h-[80vh] aspect-video"
     />
+  );
+}
+
+export default function CodeDisplay({ code }: { code: string | undefined }) {
+  return (
+    <div className="w-36 h-24 bg-pink-200 rounded-lg shadow-md flex items-center justify-center">
+      {code === undefined ? (
+        <CodeSkeleton />
+      ) : (
+        <span className="text-4xl font-bold tracking-wider">{code}</span>
+      )}
+    </div>
+  );
+}
+
+function CodeSkeleton() {
+  return (
+    <div className="flex space-x-2">
+      {[...Array(4)].map((_, index) => (
+        <div
+          key={index}
+          className="w-8 h-12 bg-pink-300 rounded animate-pulse"
+        />
+      ))}
+    </div>
   );
 }

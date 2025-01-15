@@ -14,10 +14,11 @@
     "@aws-sdk/client-apigatewaymanagementapi": "^3.726.1",
     "@libsql/client": "^0.14.0",
     "@libsql/darwin-arm64": "0.5.0-pre.5",
+    "@libsql/linux-x64-gnu": "0.5.0-pre.5",
     "drizzle-orm": "^0.38.3",
     "nanoid": "^5.0.9",
     "prettier": "^3.4.2",
-    "sst": "3.5.7",
+    "sst": "3.5.13",
     "zod": "^3.24.1"
   }
 }

@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useStore } from "zustand";
 import { gameStateStore } from "../state";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { FaceDetection } from "@mediapipe/face_detection";
-import { onResults, useIsLookingAway } from "../mediapipe";
+import { onResults } from "../mediapipe";
 
 export const Route = createFileRoute("/lockin")({
   component: LockInComponent,

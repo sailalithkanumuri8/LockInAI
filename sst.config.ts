@@ -12,6 +12,7 @@ export default $config({
           organization: "rgodha",
           apiToken: process.env.TURSO_API_TOKEN,
         },
+        cloudflare: "5.47.0",
       },
     };
   },
@@ -19,11 +20,9 @@ export default $config({
     const group = await turso.getGroup({
       id: "group",
     });
-
     const db = new turso.Database("db", {
       group: group.id,
     });
-
     const database = new sst.Linkable("Database", {
       properties: {
         token: db.id.apply(
@@ -40,20 +39,36 @@ export default $config({
         directory: "backend",
       },
     });
-
-    const ws = new sst.aws.ApiGatewayWebSocket("Websocket", {});
+    const ws = new sst.aws.ApiGatewayWebSocket("Websocket", {
+      domain:
+        $app.stage === "production"
+          ? {
+              name: "ws.lockinai.rohangodha.com",
+              dns: sst.cloudflare.dns(),
+            }
+          : undefined,
+    });
 
     ws.route("$connect", {
       handler: "backend/src/ws.connect",
       link: [database, ws],
+      nodejs: {
+        install: ["@libsql/client", "@libsql/linux-x64-gnu"],
+      },
     });
     ws.route("$disconnect", {
       handler: "backend/src/ws.disconnect",
       link: [database, ws],
+      nodejs: {
+        install: ["@libsql/client", "@libsql/linux-x64-gnu"],
+      },
     });
     ws.route("$default", {
       handler: "backend/src/ws.handleEvent",
       link: [database, ws],
+      nodejs: {
+        install: ["@libsql/client", "@libsql/linux-x64-gnu"],
+      },
     });
 
     const site = new sst.aws.StaticSite("Site", {
@@ -61,8 +76,21 @@ export default $config({
       environment: {
         VITE_WS_URL: ws.url,
       },
+      build: {
+        command: "pnpm build",
+        output: "dist",
+      },
+      domain:
+        $app.stage === "production"
+          ? {
+              name: "lockinai.rohangodha.com",
+              dns: sst.cloudflare.dns(),
+            }
+          : undefined,
     });
-
-    return {};
+    return {
+      url: site.url,
+      ws: ws.url,
+    };
   },
 });

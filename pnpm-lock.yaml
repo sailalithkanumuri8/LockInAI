@@ -9,8 +9,11 @@ importers:
   .:
     devDependencies:
       sst:
-        specifier: 3.5.7
-        version: 3.5.7
+        specifier: 3.5.13
+        version: 3.5.13
+      typescript:
+        specifier: ~5.6.2
+        version: 5.6.3
 
   backend:
     dependencies:
@@ -23,6 +26,9 @@ importers:
       '@libsql/darwin-arm64':
         specifier: 0.5.0-pre.5
         version: 0.5.0-pre.5
+      '@libsql/linux-x64-gnu':
+        specifier: 0.5.0-pre.5
+        version: 0.5.0-pre.5
       drizzle-orm:
         specifier: ^0.38.3
         version: 0.38.3(@libsql/client@0.14.0)(@types/react@18.3.18)(react@18.3.1)
@@ -33,8 +39,8 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       sst:
-        specifier: 3.5.7
-        version: 3.5.7
+        specifier: 3.5.13
+        version: 3.5.13
       typescript:
         specifier: ^5.0.0
         version: 5.6.3
@@ -987,6 +993,7 @@ packages:
 
   '@libsql/darwin-arm64@0.5.0-pre.5':
     resolution: {integrity: sha512-kO4fiqQ4MPy/XNQNmS/snB2ja/Gh1RyUCJpNeGTw++9uGKRvz98T/s09yW4RlHX2CsCzku2lzzWQXSLDdD1D1g==}
+    cpu: [arm64]
     os: [darwin]
 
   '@libsql/darwin-x64@0.4.7':
@@ -1016,6 +1023,11 @@ packages:
 
   '@libsql/linux-x64-gnu@0.4.7':
     resolution: {integrity: sha512-CMnNRCmlWQqqzlTw6NeaZXzLWI8bydaXDke63JTUCvu8R+fj/ENsLrVBtPDlxQ0wGsYdXGlrUCH8Qi9gJep0yQ==}
+    cpu: [x64]
+    os: [linux]
+
+  '@libsql/linux-x64-gnu@0.5.0-pre.5':
+    resolution: {integrity: sha512-RHaxQB4+wttd3H8GXofoaFalzIpuicr8DlD7yuVN3rAy5OsOP6ny+Tu12Iz/IQrgA4vvKAFxJt3AJxqhs8Ltcg==}
     cpu: [x64]
     os: [linux]
 
@@ -2237,6 +2249,7 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lightningcss-darwin-arm64@1.29.1:
@@ -2525,33 +2538,33 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
-  sst-darwin-arm64@3.5.7:
-    resolution: {integrity: sha512-wrWiOyp/gJQFmKhYgcqXP06SQlksVIFXzFK8x7F+67nJ/TmTXBy4VU8fyHAeQHRUcAI4daVmkz+0gsuxRW3oGQ==}
+  sst-darwin-arm64@3.5.13:
+    resolution: {integrity: sha512-wVv4MCi8Og8J4nCKG2f3YmW8F2kuE6l5mbhj3h4A9+S4HHiTzTVMpEr8n1zru7ayz06W96tXbtpRmcZtkrNoxA==}
     cpu: [arm64]
     os: [darwin]
 
-  sst-darwin-x64@3.5.7:
-    resolution: {integrity: sha512-+R+mwqeGGNNTn5o5iKBER9lCug2FtcrBwyfyHOYR3nv9kzR9zyEgs7ca0jXM8Il9iT75+n7P46dnCg7Gti5sdw==}
+  sst-darwin-x64@3.5.13:
+    resolution: {integrity: sha512-IrwBMUBo69dp3EIMNYsS/kPYSYT6dZ57OBAp2WnedydEnFOjCglkRCofcveaulFk+g5Wst+mRgWKHd7W8Mfieg==}
     cpu: [x64]
     os: [darwin]
 
-  sst-linux-arm64@3.5.7:
-    resolution: {integrity: sha512-7AFVeC/b/kove5Bnu1FZKnPaXpBpz5fnMdqdXImw1Wdl0LHnC2yQBPNOtyS8IaVNts0ybmbeUNbT9OXV0ko0gg==}
+  sst-linux-arm64@3.5.13:
+    resolution: {integrity: sha512-++SDw86qx23c1OLaX7L430OFjPk++WJrc4SLGyA5sCDB5hZs039w4g55GCxqQyBcDtXN3qomJSKiz4tHKTZnhw==}
     cpu: [arm64]
     os: [linux]
 
-  sst-linux-x64@3.5.7:
-    resolution: {integrity: sha512-5tB52rhbe5qCXop7Y1ihhIVcjwJSBHzXexBId8AXRdEbhYovolVsvY2HMDDnHplFgh2L3dEYpszj4y5297Gplw==}
+  sst-linux-x64@3.5.13:
+    resolution: {integrity: sha512-+xehn+dSPxuzVGkT0WSLEeqw0PN+DrTXNp4GYReJTH/JQSvX00rRKG2+BW9uBOYwDFpe4t/ClkpG1Vi0Nng2VA==}
     cpu: [x64]
     os: [linux]
 
-  sst-linux-x86@3.5.7:
-    resolution: {integrity: sha512-dLOZEKu5Kdf9FTvWrdaqQ9w5yBm632VlxqL4iQ5Fah4lpHLOrL7ia/4H/NrFiUjSTESYZOzvp8ddpQMP5MzmAg==}
+  sst-linux-x86@3.5.13:
+    resolution: {integrity: sha512-yTG0aZLUTq7B8SbOZe8ZEWX8hWJFfzB115UpnABBmDVinzx1Cw0IBKBul8UvqaWpkMGyiPFw3Jmdy0jrnjexfw==}
     cpu: [x86]
     os: [linux]
 
-  sst@3.5.7:
-    resolution: {integrity: sha512-fBgSMFyV1NeDlfix7YqiI9PJzOGF2ObsTs7bTkNswqzRzuoGZILxnvxYGmMKX+371DvKKnb9LbgKCHX0c+GmUA==}
+  sst@3.5.13:
+    resolution: {integrity: sha512-/8MdMw3FStjGNsHsrSwCbKuxJ3M+yAOKlLLBtFaNF2hD0Idn1fZxMUbOug8uiNPsXI0hjhxyt/ahtwtYeMgzsg==}
     hasBin: true
 
   strip-json-comments@3.1.1:
@@ -3688,6 +3701,8 @@ snapshots:
 
   '@libsql/linux-x64-gnu@0.4.7':
     optional: true
+
+  '@libsql/linux-x64-gnu@0.5.0-pre.5': {}
 
   '@libsql/linux-x64-musl@0.4.7':
     optional: true
@@ -5246,32 +5261,32 @@ snapshots:
 
   sprintf-js@1.0.3: {}
 
-  sst-darwin-arm64@3.5.7:
+  sst-darwin-arm64@3.5.13:
     optional: true
 
-  sst-darwin-x64@3.5.7:
+  sst-darwin-x64@3.5.13:
     optional: true
 
-  sst-linux-arm64@3.5.7:
+  sst-linux-arm64@3.5.13:
     optional: true
 
-  sst-linux-x64@3.5.7:
+  sst-linux-x64@3.5.13:
     optional: true
 
-  sst-linux-x86@3.5.7:
+  sst-linux-x86@3.5.13:
     optional: true
 
-  sst@3.5.7:
+  sst@3.5.13:
     dependencies:
       aws4fetch: 1.0.20
       jose: 5.2.3
       openid-client: 5.6.4
     optionalDependencies:
-      sst-darwin-arm64: 3.5.7
-      sst-darwin-x64: 3.5.7
-      sst-linux-arm64: 3.5.7
-      sst-linux-x64: 3.5.7
-      sst-linux-x86: 3.5.7
+      sst-darwin-arm64: 3.5.13
+      sst-darwin-x64: 3.5.13
+      sst-linux-arm64: 3.5.13
+      sst-linux-x64: 3.5.13
+      sst-linux-x86: 3.5.13
 
   strip-json-comments@3.1.1: {}
 

@@ -19,12 +19,18 @@ function LockInComponent() {
     gameState.stage === "requesting_code" ? undefined : gameState.code;
 
   return (
-    <div className="flex flex-col justify-between items-center py-16 w-full h-screen">
+    <div className="flex flex-col w-full h-screen bg-[#FF5A5A] bg-[url('/background.png')] justify-between items-center py-8 w-full h-screen">
       <WebcamView stream={stream} />
-      <div className="flex flex-col gap-y-4">
-        <div>stage: {gameState.stage}</div>
-        <div className="text-6xl">{code}</div>
-        {gameState.stage === "locked_in" ? (
+      <div className="flex flex-col gap-y-4 items-center">
+        <div className="text-2xl text-white">
+          {gameState.stage === "locked_in"
+            ? "Locked In"
+            : gameState.stage === "requesting_code"
+              ? "Requesting Code..."
+              : "Waiting for Phone Connection..."}
+        </div>
+        <CodeDisplay code={code} />
+        {import.meta.env.DEV && gameState.stage === "locked_in" ? (
           <button onClick={() => gameState.lookedAway()}> lookedAway </button>
         ) : null}
       </div>
@@ -35,6 +41,7 @@ function LockInComponent() {
 function WebcamView({ stream }: { stream: MediaStream }) {
   // Define references
   const videoRef = useRef<HTMLVideoElement>(null);
+  const gameState = useStore(gameStateStore, ({ stage }) => stage);
 
   // Detect function
   const detect = async (net: facemesh.FaceLandmarksDetector) => {
@@ -142,7 +149,32 @@ function WebcamView({ stream }: { stream: MediaStream }) {
       ref={videoRef}
       autoPlay
       playsInline
-      className="object-cover w-[80%] aspect-video"
+      className={`object-cover h-[80vh] aspect-video ${gameState === "locked_in" ? "border-4 border-white" : ""}`}
     />
+  );
+}
+
+export default function CodeDisplay({ code }: { code: string | undefined }) {
+  return (
+    <div className="flex justify-center items-center w-36 h-24 bg-pink-200 rounded-lg shadow-md">
+      {code === undefined ? (
+        <CodeSkeleton />
+      ) : (
+        <span className="text-4xl font-bold tracking-wider">{code}</span>
+      )}
+    </div>
+  );
+}
+
+function CodeSkeleton() {
+  return (
+    <div className="flex space-x-2">
+      {[...Array(4)].map((_, index) => (
+        <div
+          key={index}
+          className="w-8 h-12 bg-pink-300 rounded animate-pulse"
+        />
+      ))}
+    </div>
   );
 }

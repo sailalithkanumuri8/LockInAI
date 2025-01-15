@@ -10,7 +10,7 @@ export const isLookingAwayStore = createStore<{
   lookAtScreen: () => set((state) => ({ count: Math.max(state.count - 2, 0) })),
   lookAway: () =>
     set((state) => {
-      if (state.count > 20) {
+      if (state.count > 10) {
         const gameState = gameStateStore.getState();
         if (gameState.stage === "locked_in") gameState.lookedAway();
         return { count: 0 };

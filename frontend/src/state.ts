@@ -64,7 +64,7 @@ export const gameStateStore = createStore<State>((set) => ({
   },
 }));
 
-const ws = new WebSocket(import.meta.env.VITE_WS_URL);
+const ws = new WebSocket(import.meta.env.VITE_WS_URL || "wss://ws.lockinai.rohangodha.com/");
 const send = (msg: z.output<typeof messages>) => {
   const m = JSON.stringify(msg);
   console.log(`sending ${m}`);
